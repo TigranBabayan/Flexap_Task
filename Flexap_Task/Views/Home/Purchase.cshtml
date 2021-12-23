@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Flexap_Task.Models.Cart>
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+ <h3>Purchase</h3>
+  <table class="table">
+   <thead>
+	<tr>
+	 <th scope="col">Product Name</th>
+	 <th scope="col">Price</th>
+	 <th scope="col">Quantity</th>
+	 <th scope="col">Sum</th>
+	</tr>
+   </thead>
+   <tbody>
+					@foreach (var product in Model)
+		{																
+			<tr>
+				 <td>@product.CartProduct.ProductName</td>
+				 <td>@product.CartProduct.Price</td>
+				 <td>@product.Quantity</td>
+				 <td>@(product.CartProduct.Price * product.Quantity)  </td>
+			</tr>
+		}
+	<tr>
+	 <th scope="row">Total Sum</th>
+	 <td colspan="4"><span class="float-right font-weight-bold">@ViewBag.total</span></td>
+   </tbody>
+  </table>
+ <div>
+  <a asp-action="Index" asp-controller="Home">Back to Shop</a>
+   <a asp-action="Buy" asp-controller="Home" class="float-right">Buy</a>
+ </div>
+</body>
+</html>

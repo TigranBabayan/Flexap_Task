@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Flexap_Task.Models.Order>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+
+<form method="post" asp-action="Filter" asp-controller="Orders">
+                    <div class="row form-group ">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label>PLU</label>
+                            <input type="number" name="PLU" class="form-control" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label>Barcode</label>
+                            <input name="Barcode" class="form-control"  />
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label>Quantity</label>
+                            <input type="number" name="Quantity" class="form-control" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <label>Start Date</label>
+                            <input name="StartDate" class="form-control" type="date" />
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <label>End Date</label>
+                            <input name="EndDate" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <center><button type="submit" class="btn btn-success">Filter<i class="fa fa-search"></i></button></center>
+                </form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PLU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Barcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datatime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PLU)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Barcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datatime)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+	new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+	{
+	DisplayItemSliceAndTotal = true,
+	ContainerDivClasses = new[] { "navigation" },
+	LiElementClasses = new[] { "page-item" },
+	PageClasses = new[] { "page-link" },
+	})
+
+
+@section Scripts{
+<script>
+	$(document).ready(function () {
+		$('ul.pagination > li.disabled > a').addClass('page-link');
+	});
+</script>
+}

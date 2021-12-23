@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Flexap_Task.Models.Product>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+
+<p>
+	 <a asp-action="Create">Create New</a>
+</p>
+
+	<a asp-action="Generated"  class="float-right">Generated  Products</a><br />
+
+	<a asp-action="DeleteGenerated"  class="float-right">Delete Generated  Products</a>
+
+<form method="post" asp-action="SearchByPluOrBarode" asp-controller="Products" class="mt-2 mb-2">
+	 <input type="search"  class="form-control" name="source" placeholder="Enter PLU or Barcode">
+</form>
+<table class="table">
+ <thead>
+  <tr>
+   <th>
+				@Html.DisplayNameFor(model => model.ProductImages)
+   </th>
+   <th>
+				@Html.DisplayNameFor(model => model.ProductName)
+   </th>
+   <th>
+				@Html.DisplayNameFor(model => model.Price)
+   </th>
+   <th>
+				@Html.DisplayNameFor(model => model.Barcode)
+   </th>
+   <th>
+				@Html.DisplayNameFor(model => model.PLU)
+   </th>
+
+   <th></th>
+  </tr>
+ </thead>
+ <tbody>
+		@foreach (var item in Model)
+		{
+	  <tr>
+		<td>
+						@if (item.ProductGaleries.Count()<1)
+						{
+						<img src="~/images/NO.jpg" style="width:50px" />
+						}
+					else
+						{
+						<img src="~/images/@Html.DisplayFor(modelItem => item.ProductGaleries.FirstOrDefault().ImageUrl)" style="width:50px" />
+						}
+		</td>
+	   <td>
+					@Html.DisplayFor(modelItem => item.ProductName)
+	   </td>
+	   <td>
+					@Html.DisplayFor(modelItem => item.Price)
+	   </td>
+	   <td>
+					@Html.DisplayFor(modelItem => item.Barcode)
+	   </td>
+	   <td>
+					@Html.DisplayFor(modelItem => item.PLU)
+	   </td>
+	   <td>
+		<a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit" aria-hidden="true"></i></a>
+		<a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		<a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></a>
+	   </td>
+	  </tr>
+		}
+ </tbody>
+</table>
+ @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+	new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+	{
+	DisplayItemSliceAndTotal = true,
+	ContainerDivClasses = new[] { "navigation" },
+	LiElementClasses = new[] { "page-item" },
+	PageClasses = new[] { "page-link" },
+	})
+
+
+@section Scripts{
+<script>
+	$(document).ready(function () {
+		$('ul.pagination > li.disabled > a').addClass('page-link');
+	});
+</script>
+}
